@@ -40,9 +40,14 @@ Window::~Window()
     glfwTerminate();
 }
 
-void Window::pollEvents()
+void Window::pollEvents() const
 {
     glfwPollEvents();
+}
+
+void Window::swapBuffers() const
+{
+    glfwSwapBuffers(window);
 }
 
 bool Window::shouldClose() const

@@ -13,7 +13,8 @@ public:
     Window(unsigned int width, unsigned int height, const char *title);
     ~Window();
 
-    void pollEvents();
+    void pollEvents() const;
+    void swapBuffers() const;
     bool shouldClose() const;
 };
 

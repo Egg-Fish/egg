@@ -1,5 +1,7 @@
 #include "egg/window.hpp"
 #include "egg/shader.hpp"
+#include "egg/VertexBuffer.h"
+#include "egg/VertexBufferLayout.h"
 
 void main()
 {
@@ -7,8 +9,7 @@ void main()
 
     Shader shader(
         "C:/Users/Eugenio/Desktop/egg/examples/example1/shaders/vertex.glsl",
-        "C:/Users/Eugenio/Desktop/egg/examples/example1/shaders/fragment.glsl"
-    );
+        "C:/Users/Eugenio/Desktop/egg/examples/example1/shaders/fragment.glsl");
 
     shader.use();
 
@@ -16,21 +17,35 @@ void main()
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
 
-    unsigned int VBO;
-    glGenBuffers(1, &VBO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-
     float vertices[] = {
-        -0.5f, -0.5f, 0.0f,
-        0.5f, -0.5f, 0.0f,
-        0.0f,  0.5f, 0.0f
-    }; 
 
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+        +0.0f, +0.5f, +0.0f, 1.0f, 0.0f, 0.0f,
+        +0.5f, -0.5f, +0.0f, 0.0f, 0.0f, 1.0f,
+        -0.5f, -0.5f, +0.0f, 0.0f, 1.0f, 0.0f
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
-    glEnableVertexAttribArray(0);
+    };
 
+    VertexBuffer vb(vertices, sizeof(vertices));
+
+    VertexBufferLayout vbl;
+    vbl.push(0, 3, GL_FLOAT);
+    vbl.push(1, 3, GL_FLOAT);
+
+    std::vector<VertexBufferLayoutElement> elements = vbl.getElements();
+
+    for (VertexBufferLayoutElement el : elements)
+    {
+        glEnableVertexAttribArray(el.index);
+        glVertexAttribPointer(
+            el.index,
+            el.count,
+            el.type,
+            el.normalized,
+            el.stride,
+            el.offset);
+    }
+    // glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
+    // glEnableVertexAttribArray(0);
 
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 

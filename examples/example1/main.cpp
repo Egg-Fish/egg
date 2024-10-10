@@ -8,8 +8,8 @@ void main()
     Window window(800, 600, "My Window!");
 
     Shader shader(
-        "C:/Users/Eugenio/Desktop/egg/examples/example1/shaders/vertex.glsl",
-        "C:/Users/Eugenio/Desktop/egg/examples/example1/shaders/fragment.glsl");
+        "example1/shaders/vertex.glsl",
+        "example1/shaders/fragment.glsl");
 
     shader.use();
 

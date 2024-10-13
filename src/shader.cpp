@@ -1,4 +1,4 @@
-#include "egg/shader.hpp"
+#include "egg/Shader.hpp"
 
 #include <string>
 #include <fstream>

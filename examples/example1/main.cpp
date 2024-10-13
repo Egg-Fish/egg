@@ -1,5 +1,5 @@
-#include "egg/window.hpp"
-#include "egg/shader.hpp"
+#include "egg/Window.hpp"
+#include "egg/Shader.hpp"
 #include "egg/VertexBuffer.h"
 #include "egg/VertexBufferLayout.h"
 #include "egg/VertexArray.hpp"

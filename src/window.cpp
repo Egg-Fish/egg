@@ -1,4 +1,4 @@
-#include "egg/window.hpp"
+#include "egg/Window.hpp"
 
 #include <iostream>
 

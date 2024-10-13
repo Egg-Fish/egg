@@ -58,24 +58,20 @@ void main()
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
         
+        static float colorIntensity = 1.0f;
         {
-            static float f = 0.0f;
-            static int counter = 0;
-
             ImGui::Begin("Hello, world!");
             ImGui::Text("This is some useful text."); 
 
-            ImGui::SliderFloat("Random float lol", &f, 0.0f, 1.0f);
-            ImGui::ColorEdit3("Background Color", (float*)&clearColor);
+            ImGui::SliderFloat("Color Intensity", &colorIntensity, 0.0f, 1.0f);
 
-            if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-                counter++;
-            ImGui::SameLine();
-            ImGui::Text("counter = %d", counter);
+            ImGui::ColorEdit3("Background Color", (float*)&clearColor);
 
             ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
             ImGui::End();
         }
+
+        shader.setUniform1f("colorIntensity", colorIntensity);
 
         glClearColor(clearColor.x, clearColor.y, clearColor.z, clearColor.w);
         glClear(GL_COLOR_BUFFER_BIT);

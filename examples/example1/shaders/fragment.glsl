@@ -5,7 +5,9 @@ in vec3 vertexColor;
 
 out vec4 FragColor;
 
+uniform float colorIntensity;
+
 void main()
 {
-    FragColor = vec4(vertexColor.xyz, 1.0);
+    FragColor = colorIntensity * vec4(vertexColor.xyz, 1.0);
 }

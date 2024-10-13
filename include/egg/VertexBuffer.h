@@ -15,6 +15,7 @@ public:
     ~VertexBuffer();
 
     void set(void *data, unsigned int size, GLenum usage = GL_DYNAMIC_DRAW);
+    
     void bind() const;
     void unbind() const;
 };

@@ -6,6 +6,7 @@
 VertexBuffer::VertexBuffer()
 {
     glGenBuffers(1, &VBO);
+    bind();
 }
 
 VertexBuffer::VertexBuffer(void *data, unsigned int size)

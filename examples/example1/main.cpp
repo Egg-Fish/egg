@@ -2,6 +2,7 @@
 #include "egg/shader.hpp"
 #include "egg/VertexBuffer.h"
 #include "egg/VertexBufferLayout.h"
+#include "egg/VertexArray.hpp"
 
 void main()
 {
@@ -13,9 +14,7 @@ void main()
 
     shader.use();
 
-    unsigned int VAO;
-    glGenVertexArrays(1, &VAO);
-    glBindVertexArray(VAO);
+    VertexArray va;
 
     float vertices[] = {
 
@@ -31,21 +30,7 @@ void main()
     vbl.push(0, 3, GL_FLOAT);
     vbl.push(1, 3, GL_FLOAT);
 
-    std::vector<VertexBufferLayoutElement> elements = vbl.getElements();
-
-    for (VertexBufferLayoutElement el : elements)
-    {
-        glEnableVertexAttribArray(el.index);
-        glVertexAttribPointer(
-            el.index,
-            el.count,
-            el.type,
-            el.normalized,
-            el.stride,
-            el.offset);
-    }
-    // glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
-    // glEnableVertexAttribArray(0);
+    va.addBuffer(vb, vbl);
 
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 

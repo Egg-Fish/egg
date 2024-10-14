@@ -34,13 +34,9 @@ void main()
 
     shader.use();
 
-    Texture texture(
-        "example2/textures/container.jpg"
-    );
+    Texture texture("example2/textures/container.jpg");
 
-    shader.setUniform1i(
-        "texture1", 0
-    );
+    shader.setUniform1i("texture1", 0);
 
     VertexArray va;
 
@@ -74,25 +70,12 @@ void main()
 
     ImVec4 clearColor = ImVec4(0.2f, 0.3f, 0.3f, 1.0f);
 
-    glm::mat4 modelMatrix(1.0f);
-    shader.setUniformMatrix4fv(
-        "u_ModelMatrix",
-        1,
-        false,
-        glm::value_ptr(modelMatrix)
-    );
-
     glm::mat4 viewMatrix = glm::lookAt(
         glm::vec3(0.0f, 0.0f, 5.0f),
         glm::vec3(0.0f),
         glm::vec3(0.0f, 1.0f, 0.0f)
     );
-    shader.setUniformMatrix4fv(
-        "u_ViewMatrix",
-        1,
-        false,
-        glm::value_ptr(viewMatrix)
-    );
+    shader.setUniformMatrix4fv("u_ViewMatrix", 1, false, glm::value_ptr(viewMatrix));
 
     int width, height;
     glfwGetWindowSize(glfwGetCurrentContext(), &width, &height);
@@ -102,12 +85,7 @@ void main()
         0.1f, 
         100.0f
     );
-    shader.setUniformMatrix4fv(
-        "u_ProjectionMatrix",
-        1,
-        false,
-        glm::value_ptr(projectionMatrix)
-    );
+    shader.setUniformMatrix4fv("u_ProjectionMatrix", 1, false, glm::value_ptr(projectionMatrix));
 
     while (!window.shouldClose())
     {
@@ -136,20 +114,16 @@ void main()
         }
         
         glm::mat4 modelMatrix = glm::mat4(1.0f);
+        const float pi = glm::pi<float>();
         
-        modelMatrix = glm::rotate(modelMatrix, (glm::pi<float>() / 180.0f) * crateRotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
-        modelMatrix = glm::rotate(modelMatrix, (glm::pi<float>() / 180.0f) * crateRotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
-        modelMatrix = glm::rotate(modelMatrix, (glm::pi<float>() / 180.0f) * crateRotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
+        modelMatrix = glm::rotate(modelMatrix, (pi / 180.0f) * crateRotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
+        modelMatrix = glm::rotate(modelMatrix, (pi / 180.0f) * crateRotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
+        modelMatrix = glm::rotate(modelMatrix, (pi / 180.0f) * crateRotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
 
         modelMatrix = glm::translate(glm::mat4(1.0f), cratePosition) * modelMatrix;
 
         shader.setUniform1f("colorIntensity", colorIntensity);
-        shader.setUniformMatrix4fv(
-            "u_ModelMatrix",
-            1,
-            false,
-            glm::value_ptr(modelMatrix)
-        );
+        shader.setUniformMatrix4fv("u_ModelMatrix", 1, false, glm::value_ptr(modelMatrix));
 
         glClearColor(clearColor.x, clearColor.y, clearColor.z, clearColor.w);
         glClear(GL_COLOR_BUFFER_BIT);

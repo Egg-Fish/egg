@@ -43,10 +43,11 @@ void main()
 
     float vertices[] = {
 
-        +0.0f, +0.5f, +0.0f, 0.5f, 1.0f,
+        -0.5f, +0.5f, +0.0f, 0.0f, 1.0f,
+        -0.5f, -0.5f, +0.0f, 0.0f, 0.0f,
         +0.5f, -0.5f, +0.0f, 1.0f, 0.0f,
-        -0.5f, -0.5f, +0.0f, 0.0f, 0.0f
-
+        +0.5f, +0.5f, +0.0f, 1.0f, 1.0f,
+    
     };
 
     VertexBuffer vb(vertices, sizeof(vertices));
@@ -56,6 +57,17 @@ void main()
     vbl.push(1, 2, GL_FLOAT);
 
     va.addBuffer(vb, vbl);
+
+    unsigned int ebo;
+    glGenBuffers(1, &ebo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+
+    unsigned int indices[] = {
+        0, 1, 2,
+        0, 2, 3
+    };
+
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     ImVec4 clearColor = ImVec4(0.2f, 0.3f, 0.3f, 1.0f);
 
@@ -85,7 +97,8 @@ void main()
         glClearColor(clearColor.x, clearColor.y, clearColor.z, clearColor.w);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        // glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

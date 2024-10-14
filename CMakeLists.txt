@@ -36,6 +36,12 @@ target_include_directories(imgui PUBLIC ${IMGUI_BACKEND_DIR})
 target_include_directories(imgui PUBLIC external/glfw/include) # Needed for GLFW backend
 target_include_directories(imgui PUBLIC external/glad/include) # Needed for GLAD backend
 
+# Add stb_image directory
+set(STB_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/external/stb")
+
+# Include stb_image header files
+include_directories(${STB_INCLUDE_DIR})
+
 # Library source files
 file(GLOB_RECURSE LIBRARY_SOURCES src/*.cpp)
 
@@ -46,10 +52,12 @@ target_link_libraries(egg glfw glad imgui)
 
 # Include directories for your library
 target_include_directories(egg PUBLIC include)
+target_include_directories(egg PUBLIC ${STB_INCLUDE_DIR})
 
 # Add examples
 if(BUILD_EXAMPLES)
     add_subdirectory(examples/example1)
+    add_subdirectory(examples/example2)
 endif()
 
 # Add tests

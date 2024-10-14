@@ -38,6 +38,8 @@ target_include_directories(imgui PUBLIC external/glad/include) # Needed for GLAD
 
 # Add stb_image directory
 set(STB_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/external/stb")
+# Add GLM
+set(GLM_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/external/glm")
 
 # Include stb_image header files
 include_directories(${STB_INCLUDE_DIR})
@@ -53,6 +55,7 @@ target_link_libraries(egg glfw glad imgui)
 # Include directories for your library
 target_include_directories(egg PUBLIC include)
 target_include_directories(egg PUBLIC ${STB_INCLUDE_DIR})
+target_include_directories(egg PUBLIC ${GLM_INCLUDE_DIR})
 
 # Add examples
 if(BUILD_EXAMPLES)

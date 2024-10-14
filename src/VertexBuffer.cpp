@@ -1,4 +1,4 @@
-#include "egg/VertexBuffer.h"
+#include "egg/VertexBuffer.hpp"
 
 #include <glad/glad.h>
 #include <glfw/glfw3.h>

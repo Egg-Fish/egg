@@ -3,8 +3,8 @@
 #include <glad/glad.h>
 #include <glfw/glfw3.h>
 
-#include "egg/VertexBuffer.h"
-#include "egg/VertexBufferLayout.h"
+#include "egg/VertexBuffer.hpp"
+#include "egg/VertexBufferLayout.hpp"
 
 VertexArray::VertexArray()
 {

@@ -1,7 +1,7 @@
 #include "egg/Window.hpp"
 #include "egg/Shader.hpp"
-#include "egg/VertexBuffer.h"
-#include "egg/VertexBufferLayout.h"
+#include "egg/VertexBuffer.hpp"
+#include "egg/VertexBufferLayout.hpp"
 #include "egg/VertexArray.hpp"
 
 #include <imgui.h>

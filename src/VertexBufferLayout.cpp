@@ -1,4 +1,4 @@
-#include "egg/VertexBufferLayout.h"
+#include "egg/VertexBufferLayout.hpp"
 
 #include <unordered_map>
 #include <string>

@@ -29,6 +29,9 @@ Window::Window(unsigned int width, unsigned int height, const char *title)
         glfwTerminate();
         return;
     }
+
+    width = width;
+    height = height;
 }
 
 Window::~Window()

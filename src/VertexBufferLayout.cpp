@@ -38,7 +38,7 @@ void VertexBufferLayout::push(unsigned int index, unsigned int count, GLenum typ
         type,
         false,
         0,
-        (void *)offset};
+        reinterpret_cast<void *>(offset)}; 
 
     elements.push_back(element);
 

@@ -24,7 +24,7 @@ namespace gl
     private:
         std::vector<VertexBufferLayoutElement> elements;
 
-        unsigned int offset = 0;
+        unsigned int currentStride = 0;
 
     public:
         VertexBufferLayout();
@@ -38,6 +38,8 @@ namespace gl
         void push(unsigned int index, unsigned int count, GLenum type);
 
         std::vector<VertexBufferLayoutElement> getElements();
+
+        unsigned int getStride() { return currentStride; };
     };
 }
 

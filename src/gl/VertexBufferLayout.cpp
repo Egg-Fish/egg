@@ -41,18 +41,18 @@ void gl::VertexBufferLayout::push(unsigned int index, unsigned int count, GLenum
         type,
         false,
         0,
-        reinterpret_cast<void *>(offset)}; 
+        reinterpret_cast<void *>(currentStride)}; 
 
     elements.push_back(element);
 
-    offset += elementSize;
+    currentStride += elementSize;
 }
 
 std::vector<gl::VertexBufferLayoutElement> gl::VertexBufferLayout::getElements()
 {
     for (int i = 0; i < elements.size(); i++)
     {
-        elements[i].stride = offset;
+        elements[i].stride = currentStride;
     }
 
     return elements;

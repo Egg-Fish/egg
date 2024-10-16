@@ -61,6 +61,7 @@ target_include_directories(egg PUBLIC ${GLM_INCLUDE_DIR})
 if(BUILD_EXAMPLES)
     add_subdirectory(examples/example1)
     add_subdirectory(examples/example2)
+    add_subdirectory(examples/example3)
 endif()
 
 # Add tests

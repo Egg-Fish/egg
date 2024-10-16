@@ -6,6 +6,8 @@
 #include "gl/VertexBuffer.hpp"
 #include "gl/VertexBufferLayout.hpp"
 
+#include <iostream>
+
 gl::VertexArray::VertexArray()
 {
     glGenVertexArrays(1, &VAO);
@@ -34,6 +36,9 @@ void gl::VertexArray::addBuffer(VertexBuffer &vb, VertexBufferLayout &vbl)
             el.stride,
             el.offset);
     }
+
+    this->count = vb.getSize() / vbl.getStride();
+    unbind();
 }
 
 void gl::VertexArray::bind() const { glBindVertexArray(VAO); }

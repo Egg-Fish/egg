@@ -24,6 +24,7 @@ void gl::ElementBuffer::set(unsigned int *data, unsigned int size, GLenum usage)
 {
     bind();
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, data, usage);
+    count = size / sizeof(unsigned int);
 }
 
 void gl::ElementBuffer::bind() const

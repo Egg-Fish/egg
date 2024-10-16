@@ -10,6 +10,7 @@ namespace gl
     {
     private:
         unsigned int VBO;
+        unsigned int count;
 
     public:
         ElementBuffer();
@@ -20,6 +21,8 @@ namespace gl
 
         void bind() const;
         void unbind() const;
+
+        unsigned int getCount() { return count; };
     };
 }
 

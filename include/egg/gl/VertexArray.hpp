@@ -13,6 +13,7 @@ namespace gl
     {
     private:
         unsigned int VAO;
+        unsigned int count;
 
     public:
         VertexArray();
@@ -22,6 +23,8 @@ namespace gl
 
         void bind() const;
         void unbind() const;
+
+        unsigned int getCount() { return count; };
     };
 }
 

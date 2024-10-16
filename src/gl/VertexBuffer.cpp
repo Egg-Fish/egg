@@ -24,6 +24,7 @@ void gl::VertexBuffer::set(void *data, unsigned int size, GLenum usage)
 {
     bind();
     glBufferData(GL_ARRAY_BUFFER, size, data, usage);
+    this->size = size;
 }
 
 void gl::VertexBuffer::bind() const

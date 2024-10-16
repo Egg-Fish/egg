@@ -10,6 +10,7 @@ namespace gl
     {
     private:
         unsigned int VBO;
+        unsigned int size;
 
     public:
         VertexBuffer();
@@ -17,6 +18,8 @@ namespace gl
         ~VertexBuffer();
 
         void set(void *data, unsigned int size, GLenum usage = GL_DYNAMIC_DRAW);
+
+        unsigned int getSize() { return size; };
 
         void bind() const;
         void unbind() const;

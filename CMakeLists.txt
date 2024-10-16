@@ -53,7 +53,7 @@ add_library(egg ${LIBRARY_SOURCES})
 target_link_libraries(egg glfw glad imgui)
 
 # Include directories for your library
-target_include_directories(egg PUBLIC include)
+target_include_directories(egg PUBLIC include/egg)
 target_include_directories(egg PUBLIC ${STB_INCLUDE_DIR})
 target_include_directories(egg PUBLIC ${GLM_INCLUDE_DIR})
 

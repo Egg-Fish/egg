@@ -1,11 +1,4 @@
-#include "egg/Window.hpp"
-#include "egg/Shader.hpp"
-#include "egg/VertexBuffer.hpp"
-#include "egg/VertexBufferLayout.hpp"
-#include "egg/VertexArray.hpp"
-#include "egg/ElementBuffer.hpp"
-#include "egg/Texture.hpp"
-#include "egg/Camera.hpp"
+#include "egg.hpp"
 
 #include <imgui.h>
 #include <backends/imgui_impl_glfw.h>
@@ -16,7 +9,7 @@
 
 void main()
 {
-    Window window(1000, 1000, "Example 2");
+    gl::Window window(1000, 1000, "Example 2");
 
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
@@ -30,17 +23,17 @@ void main()
     ImGui_ImplGlfw_InitForOpenGL(glfwGetCurrentContext(), true); // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
     ImGui_ImplOpenGL3_Init();
 
-    Shader shader(
+    gl::Shader shader(
         "example2/shaders/example2.vert",
         "example2/shaders/example2.frag");
 
     shader.use();
 
-    Texture texture("example2/textures/container.jpg");
+    gl::Texture texture("example2/textures/container.jpg");
 
     shader.setUniform1i("texture1", 0);
 
-    VertexArray va;
+    gl::VertexArray va;
 
     float vertices[] = {
         // Position          // UV
@@ -49,9 +42,9 @@ void main()
         +0.5f, -0.5f, +0.0f, 1.0f, 0.0f,
         +0.5f, +0.5f, +0.0f, 1.0f, 1.0f};
 
-    VertexBuffer vb(vertices, sizeof(vertices));
+    gl::VertexBuffer vb(vertices, sizeof(vertices));
 
-    VertexBufferLayout vbl;
+    gl::VertexBufferLayout vbl;
     vbl.push(0, 3, GL_FLOAT);
     vbl.push(1, 2, GL_FLOAT);
 
@@ -61,11 +54,11 @@ void main()
         0, 1, 2,
         0, 2, 3};
 
-    ElementBuffer eb(indices, sizeof(indices));
+    gl::ElementBuffer eb(indices, sizeof(indices));
 
     ImVec4 clearColor = ImVec4(0.2f, 0.3f, 0.3f, 1.0f);
 
-    Camera camera(
+    egg::Camera camera(
         glm::vec3(0.0f, 0.0f, 3.0f));
 
     glm::mat4 viewMatrix = camera.getViewMatrix();

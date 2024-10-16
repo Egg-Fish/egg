@@ -1,36 +1,36 @@
-#include "egg/VertexBuffer.hpp"
+#include "gl/VertexBuffer.hpp"
 
 #include <glad/glad.h>
 #include <glfw/glfw3.h>
 
-VertexBuffer::VertexBuffer()
+gl::VertexBuffer::VertexBuffer()
 {
     glGenBuffers(1, &VBO);
     bind();
 }
 
-VertexBuffer::VertexBuffer(void *data, unsigned int size)
+gl::VertexBuffer::VertexBuffer(void *data, unsigned int size)
 {
     glGenBuffers(1, &VBO);
     set(data, size);
 }
 
-VertexBuffer::~VertexBuffer()
+gl::VertexBuffer::~VertexBuffer()
 {
     glDeleteBuffers(1, &VBO);
 }
 
-void VertexBuffer::set(void *data, unsigned int size, GLenum usage)
+void gl::VertexBuffer::set(void *data, unsigned int size, GLenum usage)
 {
     bind();
     glBufferData(GL_ARRAY_BUFFER, size, data, usage);
 }
 
-void VertexBuffer::bind() const
+void gl::VertexBuffer::bind() const
 {
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
 }
-void VertexBuffer::unbind() const
+void gl::VertexBuffer::unbind() const
 {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }

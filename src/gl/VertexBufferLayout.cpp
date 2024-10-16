@@ -1,7 +1,8 @@
-#include "egg/VertexBufferLayout.hpp"
+#include "gl/VertexBufferLayout.hpp"
 
 #include <unordered_map>
 #include <string>
+#include <iostream>
 
 #include <glad/glad.h>
 #include <glfw/glfw3.h>
@@ -20,15 +21,17 @@ unsigned int getSizeOfType(GLenum type)
         return 1;
 
     default:
+        std::cerr << "Warning: Could not get size of GLenum #" << type << "." << std::endl;
         return 0;
     }
 }
 
-VertexBufferLayout::VertexBufferLayout()
+gl::VertexBufferLayout::VertexBufferLayout()
 {
+    // TODO add offset = 0 here for safety
 }
 
-void VertexBufferLayout::push(unsigned int index, unsigned int count, GLenum type)
+void gl::VertexBufferLayout::push(unsigned int index, unsigned int count, GLenum type)
 {
     unsigned int elementSize = getSizeOfType(type) * count;
 
@@ -45,7 +48,7 @@ void VertexBufferLayout::push(unsigned int index, unsigned int count, GLenum typ
     offset += elementSize;
 }
 
-std::vector<VertexBufferLayoutElement> VertexBufferLayout::getElements()
+std::vector<gl::VertexBufferLayoutElement> gl::VertexBufferLayout::getElements()
 {
     for (int i = 0; i < elements.size(); i++)
     {

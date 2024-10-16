@@ -7,23 +7,25 @@
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 
-class Camera
+namespace egg
 {
-private:
-    glm::vec3 worldPosition;
-    glm::vec3 worldFront;
-    glm::vec3 worldUp;
-    glm::vec3 worldRight;
+    class Camera
+    {
+    private:
+        glm::vec3 worldPosition;
+        glm::vec3 worldFront;
+        glm::vec3 worldUp;
+        glm::vec3 worldRight;
 
-public:
-    Camera(
-        glm::vec3 worldPosition,
-        glm::vec3 worldFront = glm::vec3(0.0f, 0.0f, -1.0f),
-        glm::vec3 worldUp = glm::vec3(0.0f, 1.0f, 0.0f)
-    );
+    public:
+        Camera(
+            glm::vec3 worldPosition,
+            glm::vec3 worldFront = glm::vec3(0.0f, 0.0f, -1.0f),
+            glm::vec3 worldUp = glm::vec3(0.0f, 1.0f, 0.0f));
 
-    glm::mat4 getViewMatrix();
-    glm::mat4 getProjectionMatrix(unsigned int viewWidth, unsigned int viewHeight);
-};
+        glm::mat4 getViewMatrix();
+        glm::mat4 getProjectionMatrix(unsigned int viewWidth, unsigned int viewHeight);
+    };
+}
 
 #endif

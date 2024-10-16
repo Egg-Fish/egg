@@ -1,22 +1,22 @@
-#include "egg/VertexArray.hpp"
+#include "gl/VertexArray.hpp"
 
 #include <glad/glad.h>
 #include <glfw/glfw3.h>
 
-#include "egg/VertexBuffer.hpp"
-#include "egg/VertexBufferLayout.hpp"
+#include "gl/VertexBuffer.hpp"
+#include "gl/VertexBufferLayout.hpp"
 
-VertexArray::VertexArray()
+gl::VertexArray::VertexArray()
 {
     glGenVertexArrays(1, &VAO);
     bind();
 }
-VertexArray::~VertexArray()
+gl::VertexArray::~VertexArray()
 {
     glDeleteVertexArrays(1, &VAO);
 }
 
-void VertexArray::addBuffer(VertexBuffer &vb, VertexBufferLayout &vbl)
+void gl::VertexArray::addBuffer(VertexBuffer &vb, VertexBufferLayout &vbl)
 {
     bind();
     vb.bind();
@@ -36,5 +36,5 @@ void VertexArray::addBuffer(VertexBuffer &vb, VertexBufferLayout &vbl)
     }
 }
 
-void VertexArray::bind() const { glBindVertexArray(VAO); }
-void VertexArray::unbind() const { glBindVertexArray(0); }
+void gl::VertexArray::bind() const { glBindVertexArray(VAO); }
+void gl::VertexArray::unbind() const { glBindVertexArray(0); }

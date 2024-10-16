@@ -1,11 +1,11 @@
-#include "egg/Texture.hpp"
+#include "gl/Texture.hpp"
 
 #include <iostream>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-Texture::Texture(const char *path)
+gl::Texture::Texture(const char *path)
 {
     glGenTextures(1, &texture);
     bind(0);
@@ -24,7 +24,7 @@ Texture::Texture(const char *path)
     stbi_image_free(data);
 }
 
-void Texture::bind(unsigned int textureUnit) const
+void gl::Texture::bind(unsigned int textureUnit) const
 {
     glActiveTexture(GL_TEXTURE0 + textureUnit);
     glBindTexture(GL_TEXTURE_2D, texture);

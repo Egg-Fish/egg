@@ -1,8 +1,4 @@
-#include "egg/Window.hpp"
-#include "egg/Shader.hpp"
-#include "egg/VertexBuffer.hpp"
-#include "egg/VertexBufferLayout.hpp"
-#include "egg/VertexArray.hpp"
+#include "egg.hpp"
 
 #include <imgui.h>
 #include <backends/imgui_impl_glfw.h>
@@ -10,7 +6,7 @@
 
 void main()
 {
-    Window window(800, 600, "My Window!");
+    gl::Window window(800, 600, "My Window!");
 
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
@@ -24,13 +20,13 @@ void main()
     ImGui_ImplGlfw_InitForOpenGL(glfwGetCurrentContext(), true);          // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
     ImGui_ImplOpenGL3_Init();
 
-    Shader shader(
+    gl::Shader shader(
         "example1/shaders/vertex.glsl",
         "example1/shaders/fragment.glsl");
 
     shader.use();
 
-    VertexArray va;
+    gl::VertexArray va;
 
     float vertices[] = {
 
@@ -40,9 +36,9 @@ void main()
 
     };
 
-    VertexBuffer vb(vertices, sizeof(vertices));
+    gl::VertexBuffer vb(vertices, sizeof(vertices));
 
-    VertexBufferLayout vbl;
+    gl::VertexBufferLayout vbl;
     vbl.push(0, 3, GL_FLOAT);
     vbl.push(1, 3, GL_FLOAT);
 

@@ -1,11 +1,11 @@
-#include "egg/Window.hpp"
+#include "gl/Window.hpp"
 
 #include <iostream>
 
 #include <glad/glad.h>
 #include <glfw/glfw3.h>
 
-Window::Window(unsigned int width, unsigned int height, const char *title)
+gl::Window::Window(unsigned int width, unsigned int height, const char *title)
 {
     if (!glfwInit())
     {
@@ -34,7 +34,7 @@ Window::Window(unsigned int width, unsigned int height, const char *title)
     height = height;
 }
 
-Window::~Window()
+gl::Window::~Window()
 {
     if (window) {
         glfwDestroyWindow(window);
@@ -43,17 +43,17 @@ Window::~Window()
     glfwTerminate();
 }
 
-void Window::pollEvents() const
+void gl::Window::pollEvents() const
 {
     glfwPollEvents();
 }
 
-void Window::swapBuffers() const
+void gl::Window::swapBuffers() const
 {
     glfwSwapBuffers(window);
 }
 
-bool Window::shouldClose() const
+bool gl::Window::shouldClose() const
 {
     return glfwWindowShouldClose(window);
 }

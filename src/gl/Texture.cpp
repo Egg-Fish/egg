@@ -19,7 +19,8 @@ gl::Texture::Texture(const char *path)
     }
     else
     {
-        std::cout << "Failed to load texture" << std::endl;
+        std::cerr << "Failed to load texture" << std::endl;
+        std::cerr << stbi_failure_reason() << std::endl;
     }
     stbi_image_free(data);
 }

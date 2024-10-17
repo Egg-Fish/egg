@@ -29,12 +29,6 @@ namespace gl
     public:
         VertexBufferLayout();
 
-        template <typename T>
-        void push(unsigned int index, unsigned int count)
-        {
-            static_assert(false);
-        }
-
         void push(unsigned int index, unsigned int count, GLenum type);
 
         std::vector<VertexBufferLayoutElement> getElements();

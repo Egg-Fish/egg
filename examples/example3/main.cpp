@@ -57,7 +57,7 @@ void main()
 
     gl::VertexBufferLayout vbl;
     vbl.push(0, 3, GL_FLOAT);
-    vbl.push(1, 2, GL_FLOAT);
+    vbl.push(2, 2, GL_FLOAT);
 
     va.addBuffer(vb, vbl);
 
@@ -120,15 +120,24 @@ void main()
     gl::VertexBuffer crateVB(crateVertices, sizeof(crateVertices));
     gl::VertexBufferLayout crateVBL;
     crateVBL.push(0, 3, GL_FLOAT);
-    crateVBL.push(1, 2, GL_FLOAT);
+    crateVBL.push(2, 2, GL_FLOAT);
     crateVA.addBuffer(crateVB, crateVBL);
     
     egg::Mesh crateMesh(crateVA);
+
+    // Model time
+
+    egg::Model suzanne;
+    suzanne.load("example3/models/suzanne_blender_monkey/scene.gltf");
+    egg::Mesh suzanneMesh = suzanne.getMeshes()[0];
+
+    suzanneMesh.bind();
 
     std::vector<egg::Mesh *> meshes;
     meshes.push_back(&mesh1);
     meshes.push_back(&mesh2);
     meshes.push_back(&crateMesh);
+    meshes.push_back(&suzanneMesh);
 
     while (!window.shouldClose())
     {
@@ -143,7 +152,7 @@ void main()
         static glm::vec3 cratePosition(0.0f);
         static glm::vec3 crateRotation(0.0f);
 
-        static bool meshSelection[] = {false, false, true};
+        static bool meshSelection[] = {false, false, false, true};
         {
             ImGui::Begin("Hello, world!");
             ImGui::Text("This is some useful text.");
@@ -159,6 +168,7 @@ void main()
                 ImGui::Selectable("Mesh 1", &meshSelection[0]);
                 ImGui::Selectable("Mesh 2", &meshSelection[1]);
                 ImGui::Selectable("Crate", &meshSelection[2]);
+                ImGui::Selectable("Suzanne", &meshSelection[3]);
                 ImGui::TreePop();
             }
 
@@ -187,7 +197,7 @@ void main()
             {
                 egg::Mesh *m = meshes[i];
                 m->bind();
-                std::cout << m->getCount() << std::endl;
+                // std::cout << m->getCount() << std::endl;
                 glDrawElements(GL_TRIANGLES, m->getCount(), GL_UNSIGNED_INT, nullptr);
             }
         }

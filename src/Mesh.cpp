@@ -1,6 +1,5 @@
 #include "Mesh.hpp"
 
-#include "egg.hpp"
 #include <vector>
 
 egg::Mesh::Mesh(gl::VertexArray &vertexArray)

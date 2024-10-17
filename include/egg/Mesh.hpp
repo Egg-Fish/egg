@@ -1,7 +1,8 @@
 #ifndef EGG_MESH_H
 #define EGG_MESH_H
 
-#include "egg.hpp"
+#include "gl/VertexArray.hpp"
+#include "gl/ElementBuffer.hpp"
 
 namespace egg
 {

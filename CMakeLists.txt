@@ -8,8 +8,10 @@ set(CMAKE_CXX_STANDARD 17)
 option(BUILD_EXAMPLES "Build examples" ON)
 option(BUILD_TESTS "Build tests" OFF)
 
-# Add external dependencies (GLFW, GLAD)
+# Add external dependencies (GLFW, GLAD, Assimp)
 add_subdirectory(external/glfw)
+add_subdirectory(external/assimp) # Add Assimp subdirectory
+
 add_library(glad STATIC external/glad/src/glad.c)
 target_include_directories(glad PUBLIC external/glad/include)
 
@@ -49,13 +51,14 @@ file(GLOB_RECURSE LIBRARY_SOURCES src/*.cpp)
 
 add_library(egg ${LIBRARY_SOURCES})
 
-# Link GLFW, GLAD, and ImGUI to the library
-target_link_libraries(egg glfw glad imgui)
+# Link GLFW, GLAD, ImGUI, and Assimp to the egg library
+target_link_libraries(egg glfw glad imgui assimp)  # Add assimp to the linked libraries
 
 # Include directories for your library
 target_include_directories(egg PUBLIC include/egg)
 target_include_directories(egg PUBLIC ${STB_INCLUDE_DIR})
 target_include_directories(egg PUBLIC ${GLM_INCLUDE_DIR})
+target_include_directories(egg PUBLIC external/assimp/include)  # Include Assimp headers
 
 # Add examples
 if(BUILD_EXAMPLES)

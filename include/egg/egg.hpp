@@ -14,5 +14,8 @@
 
 #include "Camera.hpp"
 #include "Mesh.hpp"
+#include "Material.hpp"
+
+#include "Model.hpp"
 
 #endif

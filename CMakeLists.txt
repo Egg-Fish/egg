@@ -8,6 +8,16 @@ set(CMAKE_CXX_STANDARD 17)
 option(BUILD_EXAMPLES "Build examples" ON)
 option(BUILD_TESTS "Build tests" OFF)
 
+# Set default build type to Release if not specified
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release)
+endif()
+
+# Add the DEBUG definition only for Debug builds
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    add_definitions(-DDEBUG)
+endif()
+
 # Add external dependencies (GLFW, GLAD, Assimp, JSON)
 add_subdirectory(external/glfw)
 add_subdirectory(external/assimp)  # Add Assimp subdirectory

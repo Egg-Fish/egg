@@ -1,4 +1,5 @@
 #include "gl/Shader.hpp"
+#include "gl/gl_utils.hpp"
 
 #include <string>
 #include <fstream>
@@ -33,13 +34,14 @@ unsigned int createShader(GLenum shaderType, const char *shaderPath)
     int success;
     char infoLog[512];
 
-    unsigned int shader = glCreateShader(shaderType);
-    glShaderSource(shader, 1, &shaderCode, 0);
-    glCompileShader(shader);
-    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+    unsigned int shader;
+    GL_CALL(shader = glCreateShader(shaderType));
+    GL_CALL(glShaderSource(shader, 1, &shaderCode, 0));
+    GL_CALL(glCompileShader(shader));
+    GL_CALL(glGetShaderiv(shader, GL_COMPILE_STATUS, &success));
     if (!success)
     {
-        glGetShaderInfoLog(shader, 512, NULL, infoLog);
+        GL_CALL(glGetShaderInfoLog(shader, 512, NULL, infoLog));
         std::cout << "Failed to compile [\n"
                   << shaderCode << "\n]\n"
                   << infoLog << std::endl;
@@ -56,22 +58,23 @@ gl::Shader::Shader(const char *vertexPath, const char *fragmentPath)
     unsigned int vertexShader = createShader(GL_VERTEX_SHADER, vertexPath);
     unsigned int fragmentShader = createShader(GL_FRAGMENT_SHADER, fragmentPath);
 
-    program = glCreateProgram();
+    GL_CALL(program = glCreateProgram());
 
-    glAttachShader(program, vertexShader);
-    glAttachShader(program, fragmentShader);
+    GL_CALL(glAttachShader(program, vertexShader));
+    GL_CALL(glAttachShader(program, fragmentShader));
 
-    glLinkProgram(program);
-    glGetProgramiv(program, GL_LINK_STATUS, &success);
+    GL_CALL(glLinkProgram(program));
+    GL_CALL(glGetProgramiv(program, GL_LINK_STATUS, &success));
     if (!success)
     {
-        glGetProgramInfoLog(program, 512, NULL, infoLog);
+        GL_CALL(glGetProgramInfoLog(program, 512, NULL, infoLog));
         std::cout << "Failed to link shaders \n"
                   << infoLog << std::endl;
+        program = 0;
     }
 
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
+    GL_CALL(glDeleteShader(vertexShader));
+    GL_CALL(glDeleteShader(fragmentShader));
 }
 
 gl::Shader::Shader(const char *vertexPath, const char *fragmentPath, const char *geometryPath)
@@ -83,208 +86,285 @@ gl::Shader::Shader(const char *vertexPath, const char *fragmentPath, const char 
     unsigned int fragmentShader = createShader(GL_FRAGMENT_SHADER, fragmentPath);
     unsigned int geometryShader = createShader(GL_GEOMETRY_SHADER, geometryPath);
 
-    program = glCreateProgram();
+    GL_CALL(program = glCreateProgram());
 
-    glAttachShader(program, vertexShader);
-    glAttachShader(program, fragmentShader);
-    glAttachShader(program, geometryShader);
+    GL_CALL(glAttachShader(program, vertexShader));
+    GL_CALL(glAttachShader(program, fragmentShader));
+    GL_CALL(glAttachShader(program, geometryShader));
 
-    glLinkProgram(program);
-    glGetProgramiv(program, GL_LINK_STATUS, &success);
+    GL_CALL(glLinkProgram(program));
+    GL_CALL(glGetProgramiv(program, GL_LINK_STATUS, &success));
     if (!success)
     {
-        glGetProgramInfoLog(program, 512, NULL, infoLog);
+        GL_CALL(glGetProgramInfoLog(program, 512, NULL, infoLog));
         std::cout << "Failed to link shaders \n"
                   << infoLog << std::endl;
+        program = 0;
     }
 
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-    glDeleteShader(geometryShader);
+    GL_CALL(glDeleteShader(vertexShader));
+    GL_CALL(glDeleteShader(fragmentShader));
+    GL_CALL(glDeleteShader(geometryShader));
 }
 
 gl::Shader::~Shader()
 {
-    glDeleteProgram(program);
+    if (program != 0)
+        GL_CALL(glDeleteProgram(program));
 }
 
 void gl::Shader::use() const
 {
-    glUseProgram(program);
+    if (program != 0)
+        GL_CALL(glUseProgram(program));
 }
 
-unsigned int gl::Shader::getUniformLocation(const char *variable) const
+int gl::Shader::getUniformLocation(const char *variable) const
 {
-    return glGetUniformLocation(program, variable);
+    int uniformLocation;
+    GL_CALL(uniformLocation = glGetUniformLocation(program, variable));
+    if (uniformLocation == -1)
+    {
+        std::cerr << "Error: Could not find uniform location associated with name " << variable << std::endl;
+        return -1;
+    }
+
+    return uniformLocation;
 }
 
 void gl::Shader::setUniform1f(const char *variable, float v0)
 {
-    glUniform1f(getUniformLocation(variable), v0);
+    GLint location = getUniformLocation(variable);
+    if (location == -1) return;
+    GL_CALL(glUniform1f(location, v0););
 }
 
 void gl::Shader::setUniform2f(const char *variable, float v0, float v1)
 {
-    glUniform2f(getUniformLocation(variable), v0, v1);
+    GLint location = getUniformLocation(variable);
+    if (location == -1) return;
+    GL_CALL(glUniform2f(location, v0, v1););
 }
 
 void gl::Shader::setUniform3f(const char *variable, float v0, float v1, float v2)
 {
-    glUniform3f(getUniformLocation(variable), v0, v1, v2);
+    GLint location = getUniformLocation(variable);
+    if (location == -1) return;
+    GL_CALL(glUniform3f(location, v0, v1, v2););
 }
 
 void gl::Shader::setUniform4f(const char *variable, float v0, float v1, float v2, float v3)
 {
-    glUniform4f(getUniformLocation(variable), v0, v1, v2, v3);
+    GLint location = getUniformLocation(variable);
+    if (location == -1) return;
+    GL_CALL(glUniform4f(location, v0, v1, v2, v3););
 }
 
 // 1i, 2i, 3i, 4i
 void gl::Shader::setUniform1i(const char *variable, int v0)
 {
-    glUniform1i(getUniformLocation(variable), v0);
+    GLint location = getUniformLocation(variable);
+    if (location == -1) return;
+    GL_CALL(glUniform1i(location, v0););
 }
 
 void gl::Shader::setUniform2i(const char *variable, int v0, int v1)
 {
-    glUniform2i(getUniformLocation(variable), v0, v1);
+    GLint location = getUniformLocation(variable);
+    if (location == -1) return;
+    GL_CALL(glUniform2i(location, v0, v1););
 }
 
 void gl::Shader::setUniform3i(const char *variable, int v0, int v1, int v2)
 {
-    glUniform3i(getUniformLocation(variable), v0, v1, v2);
+    GLint location = getUniformLocation(variable);
+    if (location == -1) return;
+    GL_CALL(glUniform3i(location, v0, v1, v2););
 }
 
 void gl::Shader::setUniform4i(const char *variable, int v0, int v1, int v2, int v3)
 {
-    glUniform4i(getUniformLocation(variable), v0, v1, v2, v3);
+    GLint location = getUniformLocation(variable);
+    if (location == -1) return;
+    GL_CALL(glUniform4i(location, v0, v1, v2, v3););
 }
 
 // 1ui, 2ui, 3ui, 4ui
 void gl::Shader::setUniform1ui(const char *variable, unsigned int v0)
 {
-    glUniform1ui(getUniformLocation(variable), v0);
+    GLint location = getUniformLocation(variable);
+    if (location == -1) return;
+    GL_CALL(glUniform1ui(location, v0););
 }
 
 void gl::Shader::setUniform2ui(const char *variable, unsigned int v0, unsigned int v1)
 {
-    glUniform2ui(getUniformLocation(variable), v0, v1);
+    GLint location = getUniformLocation(variable);
+    if (location == -1) return;
+    GL_CALL(glUniform2ui(location, v0, v1););
 }
 
 void gl::Shader::setUniform3ui(const char *variable, unsigned int v0, unsigned int v1, unsigned int v2)
 {
-    glUniform3ui(getUniformLocation(variable), v0, v1, v2);
+    GLint location = getUniformLocation(variable);
+    if (location == -1) return;
+    GL_CALL(glUniform3ui(location, v0, v1, v2););
 }
 
 void gl::Shader::setUniform4ui(const char *variable, unsigned int v0, unsigned int v1, unsigned int v2, unsigned int v3)
 {
-    glUniform4ui(getUniformLocation(variable), v0, v1, v2, v3);
+    GLint location = getUniformLocation(variable);
+    if (location == -1) return;
+    GL_CALL(glUniform4ui(location, v0, v1, v2, v3););
 }
 
 // Float arrays (1fv, 2fv, 3fv, 4fv)
 void gl::Shader::setUniform1fv(const char *variable, int count, const float *value)
 {
-    glUniform1fv(getUniformLocation(variable), count, value);
+    GLint location = getUniformLocation(variable);
+    if (location == -1) return;
+    GL_CALL(glUniform1fv(location, count, value););
 }
 
 void gl::Shader::setUniform2fv(const char *variable, int count, const float *value)
 {
-    glUniform2fv(getUniformLocation(variable), count, value);
+    GLint location = getUniformLocation(variable);
+    if (location == -1) return;
+    GL_CALL(glUniform2fv(location, count, value););
 }
 
 void gl::Shader::setUniform3fv(const char *variable, int count, const float *value)
 {
-    glUniform3fv(getUniformLocation(variable), count, value);
+    GLint location = getUniformLocation(variable);
+    if (location == -1) return;
+    GL_CALL(glUniform3fv(location, count, value););
 }
 
 void gl::Shader::setUniform4fv(const char *variable, int count, const float *value)
 {
-    glUniform4fv(getUniformLocation(variable), count, value);
+    GLint location = getUniformLocation(variable);
+    if (location == -1) return;
+    GL_CALL(glUniform4fv(location, count, value););
 }
 
 // Integer arrays (1iv, 2iv, 3iv, 4iv)
 void gl::Shader::setUniform1iv(const char *variable, int count, const int *value)
 {
-    glUniform1iv(getUniformLocation(variable), count, value);
+    GLint location = getUniformLocation(variable);
+    if (location == -1) return;
+    GL_CALL(glUniform1iv(location, count, value););
 }
 
 void gl::Shader::setUniform2iv(const char *variable, int count, const int *value)
 {
-    glUniform2iv(getUniformLocation(variable), count, value);
+    GLint location = getUniformLocation(variable);
+    if (location == -1) return;
+    GL_CALL(glUniform2iv(location, count, value););
 }
 
 void gl::Shader::setUniform3iv(const char *variable, int count, const int *value)
 {
-    glUniform3iv(getUniformLocation(variable), count, value);
+    GLint location = getUniformLocation(variable);
+    if (location == -1) return;
+    GL_CALL(glUniform3iv(location, count, value););
 }
 
 void gl::Shader::setUniform4iv(const char *variable, int count, const int *value)
 {
-    glUniform4iv(getUniformLocation(variable), count, value);
+    GLint location = getUniformLocation(variable);
+    if (location == -1) return;
+    GL_CALL(glUniform4iv(location, count, value););
 }
 
 // Unsigned integer arrays (1uiv, 2uiv, 3uiv, 4uiv)
 void gl::Shader::setUniform1uiv(const char *variable, int count, const unsigned int *value)
 {
-    glUniform1uiv(getUniformLocation(variable), count, value);
+    GLint location = getUniformLocation(variable);
+    if (location == -1) return;
+    GL_CALL(glUniform1uiv(location, count, value););
 }
 
 void gl::Shader::setUniform2uiv(const char *variable, int count, const unsigned int *value)
 {
-    glUniform2uiv(getUniformLocation(variable), count, value);
+    GLint location = getUniformLocation(variable);
+    if (location == -1) return;
+    GL_CALL(glUniform2uiv(location, count, value););
 }
 
 void gl::Shader::setUniform3uiv(const char *variable, int count, const unsigned int *value)
 {
-    glUniform3uiv(getUniformLocation(variable), count, value);
+    GLint location = getUniformLocation(variable);
+    if (location == -1) return;
+    GL_CALL(glUniform3uiv(location, count, value););
 }
 
 void gl::Shader::setUniform4uiv(const char *variable, int count, const unsigned int *value)
 {
-    glUniform4uiv(getUniformLocation(variable), count, value);
+    GLint location = getUniformLocation(variable);
+    if (location == -1) return;
+    GL_CALL(glUniform4uiv(location, count, value););
 }
 
 // Matrix Uniforms (2x2, 3x3, 4x4, and mixed types)
 void gl::Shader::setUniformMatrix2fv(const char *variable, int count, bool transpose, const float *value)
 {
-    glUniformMatrix2fv(getUniformLocation(variable), count, transpose, value);
+    GLint location = getUniformLocation(variable);
+    if (location == -1) return;
+    GL_CALL(glUniformMatrix2fv(location, count, transpose, value););
 }
 
 void gl::Shader::setUniformMatrix3fv(const char *variable, int count, bool transpose, const float *value)
 {
-    glUniformMatrix3fv(getUniformLocation(variable), count, transpose, value);
+    GLint location = getUniformLocation(variable);
+    if (location == -1) return;
+    GL_CALL(glUniformMatrix3fv(location, count, transpose, value););
 }
 
 void gl::Shader::setUniformMatrix4fv(const char *variable, int count, bool transpose, const float *value)
 {
-    glUniformMatrix4fv(getUniformLocation(variable), count, transpose, value);
+    GLint location = getUniformLocation(variable);
+    if (location == -1) return;
+    GL_CALL(glUniformMatrix4fv(location, count, transpose, value););
 }
 
 void gl::Shader::setUniformMatrix2x3fv(const char *variable, int count, bool transpose, const float *value)
 {
-    glUniformMatrix2x3fv(getUniformLocation(variable), count, transpose, value);
+    GLint location = getUniformLocation(variable);
+    if (location == -1) return;
+    GL_CALL(glUniformMatrix2x3fv(location, count, transpose, value););
 }
 
 void gl::Shader::setUniformMatrix3x2fv(const char *variable, int count, bool transpose, const float *value)
 {
-    glUniformMatrix3x2fv(getUniformLocation(variable), count, transpose, value);
+    GLint location = getUniformLocation(variable);
+    if (location == -1) return;
+    GL_CALL(glUniformMatrix3x2fv(location, count, transpose, value););
 }
 
 void gl::Shader::setUniformMatrix2x4fv(const char *variable, int count, bool transpose, const float *value)
 {
-    glUniformMatrix2x4fv(getUniformLocation(variable), count, transpose, value);
+    GLint location = getUniformLocation(variable);
+    if (location == -1) return;
+    GL_CALL(glUniformMatrix2x4fv(location, count, transpose, value););
 }
 
 void gl::Shader::setUniformMatrix4x2fv(const char *variable, int count, bool transpose, const float *value)
 {
-    glUniformMatrix4x2fv(getUniformLocation(variable), count, transpose, value);
+    GLint location = getUniformLocation(variable);
+    if (location == -1) return;
+    GL_CALL(glUniformMatrix4x2fv(location, count, transpose, value););
 }
 
 void gl::Shader::setUniformMatrix3x4fv(const char *variable, int count, bool transpose, const float *value)
 {
-    glUniformMatrix3x4fv(getUniformLocation(variable), count, transpose, value);
+    GLint location = getUniformLocation(variable);
+    if (location == -1) return;
+    GL_CALL(glUniformMatrix3x4fv(location, count, transpose, value););
 }
 
 void gl::Shader::setUniformMatrix4x3fv(const char *variable, int count, bool transpose, const float *value)
 {
-    glUniformMatrix4x3fv(getUniformLocation(variable), count, transpose, value);
+    GLint location = getUniformLocation(variable);
+    if (location == -1) return;
+    GL_CALL(glUniformMatrix4x3fv(location, count, transpose, value););
 }

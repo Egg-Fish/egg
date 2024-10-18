@@ -1,4 +1,5 @@
 #include "gl/VertexArray.hpp"
+#include "gl/gl_utils.hpp"
 
 #include <glad/glad.h>
 #include <glfw/glfw3.h>
@@ -10,12 +11,12 @@
 
 gl::VertexArray::VertexArray()
 {
-    glGenVertexArrays(1, &VAO);
+    GL_CALL(glGenVertexArrays(1, &VAO));
     bind();
 }
 gl::VertexArray::~VertexArray()
 {
-    glDeleteVertexArrays(1, &VAO);
+    GL_CALL(glDeleteVertexArrays(1, &VAO));
 }
 
 void gl::VertexArray::addBuffer(VertexBuffer &vb, VertexBufferLayout &vbl)
@@ -27,19 +28,19 @@ void gl::VertexArray::addBuffer(VertexBuffer &vb, VertexBufferLayout &vbl)
 
     for (VertexBufferLayoutElement el : elements)
     {
-        glEnableVertexAttribArray(el.index);
-        glVertexAttribPointer(
+        GL_CALL(glEnableVertexAttribArray(el.index));
+        GL_CALL(glVertexAttribPointer(
             el.index,
             el.count,
             el.type,
             el.normalized,
             el.stride,
-            el.offset);
+            el.offset));
     }
 
     this->count = vb.getSize() / vbl.getStride();
     unbind();
 }
 
-void gl::VertexArray::bind() const { glBindVertexArray(VAO); }
-void gl::VertexArray::unbind() const { glBindVertexArray(0); }
+void gl::VertexArray::bind() const { GL_CALL(glBindVertexArray(VAO)); }
+void gl::VertexArray::unbind() const { GL_CALL(glBindVertexArray(0)); }

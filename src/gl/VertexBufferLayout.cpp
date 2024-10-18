@@ -28,7 +28,7 @@ unsigned int getSizeOfType(GLenum type)
 
 gl::VertexBufferLayout::VertexBufferLayout()
 {
-    // TODO add offset = 0 here for safety
+    currentStride = 0;
 }
 
 void gl::VertexBufferLayout::push(unsigned int index, unsigned int count, GLenum type)

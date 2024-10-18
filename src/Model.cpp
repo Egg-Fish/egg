@@ -15,8 +15,6 @@ egg::Model::Model()
 
 void egg::Model::processMesh(aiMesh *mesh)
 {
-    std::cout << "Processing mesh" << std::endl;
-
     gl::VertexArray *va = new gl::VertexArray;
     gl::VertexBuffer *vb = new gl::VertexBuffer;
 
@@ -26,12 +24,6 @@ void egg::Model::processMesh(aiMesh *mesh)
 
     for (int i = 0; i < mesh->mNumVertices; i++)
     {
-        std::cout 
-            << mesh->mVertices[i].x 
-            << mesh->mVertices[i].y 
-            << mesh->mVertices[i].z 
-        << std::endl;
-
         vertexData.push_back(mesh->mVertices[i].x);
         vertexData.push_back(mesh->mVertices[i].y);
         vertexData.push_back(mesh->mVertices[i].z);

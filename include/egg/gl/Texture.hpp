@@ -11,7 +11,9 @@ namespace gl
         unsigned int texture;
 
     public:
+        Texture();
         Texture(const char *path);
+        ~Texture();
 
         void bind(unsigned int textureUnit) const;
     };

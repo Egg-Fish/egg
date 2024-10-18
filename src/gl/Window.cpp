@@ -1,4 +1,5 @@
 #include "gl/Window.hpp"
+#include "gl/gl_utils.hpp"
 
 #include <iostream>
 
@@ -17,7 +18,7 @@ gl::Window::Window(unsigned int width, unsigned int height, const char *title)
     if (!window)
     {
         std::cerr << "Failed to create GLFW window\n";
-        glfwTerminate();
+        GL_CALL(glfwTerminate());
         return;
     }
 
@@ -25,8 +26,8 @@ gl::Window::Window(unsigned int width, unsigned int height, const char *title)
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         std::cerr << "Failed to initialize GLAD\n";
-        glfwDestroyWindow(window);
-        glfwTerminate();
+        GL_CALL(glfwDestroyWindow(window));
+        GL_CALL(glfwTerminate());
         return;
     }
 
@@ -37,20 +38,20 @@ gl::Window::Window(unsigned int width, unsigned int height, const char *title)
 gl::Window::~Window()
 {
     if (window) {
-        glfwDestroyWindow(window);
+        GL_CALL(glfwDestroyWindow(window));
     }
 
-    glfwTerminate();
+    GL_CALL(glfwTerminate());
 }
 
 void gl::Window::pollEvents() const
 {
-    glfwPollEvents();
+    GL_CALL(glfwPollEvents());
 }
 
 void gl::Window::swapBuffers() const
 {
-    glfwSwapBuffers(window);
+    GL_CALL(glfwSwapBuffers(window));
 }
 
 bool gl::Window::shouldClose() const

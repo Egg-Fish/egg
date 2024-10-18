@@ -10,7 +10,7 @@ namespace gl
     private:
         unsigned int program;
 
-        unsigned int getUniformLocation(const char *variable) const;
+        int getUniformLocation(const char *variable) const;
 
     public:
         Shader(const char *vertexPath, const char *fragmentPath);

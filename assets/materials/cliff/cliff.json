@@ -1,0 +1,10 @@
+{
+    "vertexShader": "shaders/cliff.vert",
+    "fragmentShader": "shaders/cliff.frag",
+
+    "albedoMap": "textures/TCom_Rock_CliffLayered_1.5x1.5_1K_albedo.png",
+    "normalMap": "textures/TCom_Rock_CliffLayered_1.5x1.5_1K_normal.png",
+    "roughnessMap": "textures/TCom_Rock_CliffLayered_1.5x1.5_1K_roughness.png",
+    "aoMap": "textures/TCom_Rock_CliffLayered_1.5x1.5_1K_ao.png",
+    "heightMap": "textures/TCom_Rock_CliffLayered_1.5x1.5_1K_height.png"
+}

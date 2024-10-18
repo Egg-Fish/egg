@@ -1,0 +1,11 @@
+{
+    "vertexShader": "shaders/default.vert",
+    "fragmentShader": "shaders/default.frag",
+
+    "albedoMap": "textures/white_256x256.png",
+    "normalMap": "textures/128_128_255_256x256.png",
+    "metallicMap": "textures/black_256x256.png",
+    "roughnessMap": "textures/white_256x256.png",
+    "aoMap": "textures/white_256x256.png",
+    "heightMap": "textures/128_128_128_256x256.png"
+}

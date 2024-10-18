@@ -31,10 +31,15 @@ gl::Texture::Texture(const char *path)
     stbi_image_free(data);
 }
 
-gl::Texture::~Texture()
+void gl::Texture::release()
 {
     // Silently ignores texture = 0;
     GL_CALL(glDeleteTextures(0, &texture));
+}
+
+gl::Texture::~Texture()
+{
+    release();
 }
 
 void gl::Texture::bind(unsigned int textureUnit) const

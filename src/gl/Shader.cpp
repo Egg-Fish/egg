@@ -50,31 +50,9 @@ unsigned int createShader(GLenum shaderType, const char *shaderPath)
     return shader;
 }
 
-gl::Shader::Shader(const char *vertexPath, const char *fragmentPath)
+gl::Shader::Shader()
 {
-    int success;
-    char infoLog[512];
-
-    unsigned int vertexShader = createShader(GL_VERTEX_SHADER, vertexPath);
-    unsigned int fragmentShader = createShader(GL_FRAGMENT_SHADER, fragmentPath);
-
-    GL_CALL(program = glCreateProgram());
-
-    GL_CALL(glAttachShader(program, vertexShader));
-    GL_CALL(glAttachShader(program, fragmentShader));
-
-    GL_CALL(glLinkProgram(program));
-    GL_CALL(glGetProgramiv(program, GL_LINK_STATUS, &success));
-    if (!success)
-    {
-        GL_CALL(glGetProgramInfoLog(program, 512, NULL, infoLog));
-        std::cout << "Failed to link shaders \n"
-                  << infoLog << std::endl;
-        program = 0;
-    }
-
-    GL_CALL(glDeleteShader(vertexShader));
-    GL_CALL(glDeleteShader(fragmentShader));
+    program = 0;
 }
 
 gl::Shader::Shader(const char *vertexPath, const char *fragmentPath, const char *geometryPath)
@@ -82,15 +60,23 @@ gl::Shader::Shader(const char *vertexPath, const char *fragmentPath, const char 
     int success;
     char infoLog[512];
 
-    unsigned int vertexShader = createShader(GL_VERTEX_SHADER, vertexPath);
-    unsigned int fragmentShader = createShader(GL_FRAGMENT_SHADER, fragmentPath);
-    unsigned int geometryShader = createShader(GL_GEOMETRY_SHADER, geometryPath);
-
     GL_CALL(program = glCreateProgram());
+
+    unsigned int vertexShader;
+    unsigned int fragmentShader;
+    unsigned int geometryShader;
+
+    vertexShader = createShader(GL_VERTEX_SHADER, vertexPath);
+    fragmentShader = createShader(GL_FRAGMENT_SHADER, fragmentPath);
 
     GL_CALL(glAttachShader(program, vertexShader));
     GL_CALL(glAttachShader(program, fragmentShader));
-    GL_CALL(glAttachShader(program, geometryShader));
+
+    if (!std::string(geometryPath).empty())
+    {
+        geometryShader = createShader(GL_GEOMETRY_SHADER, geometryPath);
+        GL_CALL(glAttachShader(program, geometryShader));
+    }
 
     GL_CALL(glLinkProgram(program));
     GL_CALL(glGetProgramiv(program, GL_LINK_STATUS, &success));
@@ -104,13 +90,22 @@ gl::Shader::Shader(const char *vertexPath, const char *fragmentPath, const char 
 
     GL_CALL(glDeleteShader(vertexShader));
     GL_CALL(glDeleteShader(fragmentShader));
-    GL_CALL(glDeleteShader(geometryShader));
+
+    if (!std::string(geometryPath).empty())
+    {
+        GL_CALL(glDeleteShader(geometryShader));
+    }
+}
+
+void gl::Shader::release()
+{
+    if (program != 0)
+        GL_CALL(glDeleteProgram(program));
 }
 
 gl::Shader::~Shader()
 {
-    if (program != 0)
-        GL_CALL(glDeleteProgram(program));
+    release();
 }
 
 void gl::Shader::use() const

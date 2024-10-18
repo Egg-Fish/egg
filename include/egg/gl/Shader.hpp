@@ -1,7 +1,7 @@
 #ifndef EGG_SHADER_H
 #define EGG_SHADER_H
 
-#include <glad/glad.h>
+#include <algorithm>
 
 namespace gl
 {
@@ -11,12 +11,38 @@ namespace gl
         unsigned int program;
 
         int getUniformLocation(const char *variable) const;
+        void release();
 
     public:
-        Shader(const char *vertexPath, const char *fragmentPath);
-        Shader(const char *vertexPath, const char *fragmentPath, const char *geometryPath);
-
+        Shader();
+        Shader(
+            const char *vertexPath, 
+            const char *fragmentPath, 
+            const char *geometryPath = ""
+        );
         ~Shader();
+
+        // Delete copy constructor and assignment operator
+        Shader(const Shader &) = delete;
+        Shader &operator=(const Shader &) = delete;
+
+        // Move constructor
+        Shader(Shader &&other) noexcept : program(other.program)
+        {
+            other.program = 0;
+        }
+
+        Shader &operator=(Shader &&other)
+        {
+            // ALWAYS check for self-assignment.
+            if (this != &other)
+            {
+                release();
+                std::swap(program, other.program);
+            }
+
+            return *this;
+        }
 
         void use() const;
 

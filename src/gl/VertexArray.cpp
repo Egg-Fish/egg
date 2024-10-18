@@ -14,9 +14,15 @@ gl::VertexArray::VertexArray()
     GL_CALL(glGenVertexArrays(1, &VAO));
     bind();
 }
-gl::VertexArray::~VertexArray()
+
+void gl::VertexArray::release()
 {
     GL_CALL(glDeleteVertexArrays(1, &VAO));
+}
+
+gl::VertexArray::~VertexArray()
+{
+    release();
 }
 
 void gl::VertexArray::addBuffer(VertexBuffer &vb, VertexBufferLayout &vbl)

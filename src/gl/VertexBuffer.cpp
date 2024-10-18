@@ -16,9 +16,14 @@ gl::VertexBuffer::VertexBuffer(void *data, unsigned int size)
     set(data, size);
 }
 
-gl::VertexBuffer::~VertexBuffer()
+void gl::VertexBuffer::release()
 {
     GL_CALL(glDeleteBuffers(1, &VBO));
+}
+
+gl::VertexBuffer::~VertexBuffer()
+{
+    release();
 }
 
 void gl::VertexBuffer::set(void *data, unsigned int size, GLenum usage)

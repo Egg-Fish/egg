@@ -16,9 +16,14 @@ gl::ElementBuffer::ElementBuffer(unsigned int *data, unsigned int size)
     set(data, size);
 }
 
-gl::ElementBuffer::~ElementBuffer()
+void gl::ElementBuffer::release()
 {
     GL_CALL(glDeleteBuffers(1, &VBO));
+}
+
+gl::ElementBuffer::~ElementBuffer()
+{
+    release();
 }
 
 void gl::ElementBuffer::set(unsigned int *data, unsigned int size, GLenum usage)
